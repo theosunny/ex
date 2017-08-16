@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/javaCore/src/com/test/generic/GenericDemo2.java" />
+      <file url="file://$PROJECT_DIR$/javaCore/src/com/test/io/RandomAccessFileDemo1.java" />
+      <file url="file://$PROJECT_DIR$/javaCore/src/com/test/enumtest/Color1.java" />
+      <file url="file://$PROJECT_DIR$/javaCore/src/com/test/annotationDemo/MyTargetAnnotation.java" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mypro" />
+        <module name="springDemo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.7">
+      <module name="mypro" target="1.6" />
+      <module name="springDemo" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
