@@ -9,15 +9,44 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/aop
-            http://www.springframework.org/schema/aop/spring-aop.xsd">
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- bean definitions here -->
     <context:component-scan base-package="com"/>
+    <!-- 导入db配置文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+
     <!--c3p0连接池 -->
     <bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/kf?characterEncoding=utf-8"></property>
-        <property name="user" value="fanyy"></property>
-        <property name="password" value="fanyy"></property>
+        <property name="driverClass" value="${jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="user" value="${jdbc.userName}"></property>
+        <property name="password" value="${jdbc.password}"></property>
     </bean>
-
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="c3p0DataSource"/>
+        </property>
+    </bean>
+    <!-- 第一步配置事务管理器 -->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <!--注入DataSource数据源-->
+        <property name="dataSource" ref="c3p0DataSource"/>
+    </bean>
+    <!--第二步 配置事务的增强 -->
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager">
+        <!--做事务的增强 -->
+        <tx:attributes>
+            <!--设置事务方法的匹配规则 ①可以直接写方法的名称②可以*匹配-->
+            <tx:method name="accountMoney" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--第三步 配置切面 -->
+    <aop:config >
+        <!--切入点-->
+        <aop:pointcut id="pointcut1" expression="execution(* com.spring.tx.OrderService.*(..))"/>
+        <!--切面-->
+        <aop:advisor advice-ref="txAdvice" id="advisor1" pointcut-ref="pointcut1"/>
+    </aop:config>
 </beans>
