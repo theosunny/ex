@@ -13,5 +13,5 @@
     <context:component-scan base-package="com"/>
     <!-- 测试代码，通过导入文件方式，可以将多个模块分开配置 -->
     <import resource="classpath:spring-jdbc.xml"/>
-
+    <import resource="classpath:spring-ssh.xml"/>
 </beans>
